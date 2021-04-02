@@ -1,10 +1,15 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
+const Employee = require('./lib/Employee');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 
 let employeeOptions = ["Engineer", "Intern", "Finished building my team!"];
 
-const profileQuestions = {
-    Standard: [
+function askManagerQuestions () {
+    inquirer
+    .prompt([
         {
             type: 'input',
             message: 'What is the name of the team manager?',
@@ -28,16 +33,43 @@ const profileQuestions = {
             message: "What is the team manager's office number?",
             name: 'manageroffice'
         },
+    ])
+
+    .then (function(response) {
+        if (response.manageroffice !== "") {
+            runAddEmployee();
+        }
+    })
+
+}
+
+askManagerQuestions();
+
+function runAddEmployee () {
+    inquirer.prompt([
 
         {
             type: 'list',
-            message: 'Would you like to add an engineer or an intern?',
+            message: 'Would you like to add an engineer or an intern to your team?',
             name: 'employee',
             choices: employeeOptions
         },
-    ],
 
-    Engineer: [
+    ])
+
+    .then (function(response) {
+        if (response.employee === "Engineer") {
+            askEngineerQuestions();
+        } else if (response.employee === "Intern") {
+            askInternQuestions();
+        } else {
+            return;
+        }
+    })
+}
+
+function askEngineerQuestions() {
+    inquirer.prompt([
         {
             type: 'input',
             message: "What is the engineer's name?",
@@ -61,10 +93,18 @@ const profileQuestions = {
             message: "What is the engineer's GitHub username?",
             name: "engineergithub",
         },
-    ],
 
-    Intern: [
+    ])
 
+    .then (function(response) {
+        if (response.engineergithub !== "") {
+            runAddEmployee();
+        }
+    })
+}
+
+function askInternQuestions() {
+    inquirer.prompt([
         {
             type: 'input',
             message: "What is the intern's name?",
@@ -88,27 +128,11 @@ const profileQuestions = {
             message: "What is the intern's school?",
             name: "internschool",
         },
-    ]
+    ])
+
+    .then (function(response) {
+        if (response.internschool !== "") {
+            runAddEmployee();
+        }
+    })
 }
-
-const askProfileQuestions = async () => {
-    const { employee } = await inquirer.prompt(profileQuestions.Standard)
-
-    switch (employee.toLowerCase()) {
-        case "engineer":
-            await inquirer.prompt(profileQuestions.Engineer);
-            inquirer.prompt(profileQuestions.Standard[4]);
-            break;
-
-        case "intern":
-            await inquirer.prompt(profileQuestions.Intern);
-            inquirer.prompt(profileQuestions.Standard[4]);
-            inquirer.prompt(profileQuestions.Intern);
-            break;
-
-        case "Finished building my team!":
-            break;
-    }
-}
-
-askProfileQuestions();

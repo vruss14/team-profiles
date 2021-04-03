@@ -218,8 +218,8 @@ createdHTML.push(headerHTML);
             cardsArray.innerHTML = `
         
             <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${employeeArray[i].name}</h5>
+                <div class="card-body bg-info text-white">
+                    <h2 class="card-title">${employeeArray[i].name}</h2>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
                 </div>
                     <ul class="list-group list-group-flush">
@@ -237,14 +237,14 @@ createdHTML.push(headerHTML);
             cardsArray.innerHTML += `
         
             <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${employeeArray[i].name}</h5>
+                <div class="card-body bg-success text-white">
+                    <h2 class="card-title">${employeeArray[i].name}</h2>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
                 </div>
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">ID: ${employeeArray[i].id}</li>
                     <li class="list-group-item">Email: ${employeeArray[i].email}</li>
-                    <li class="list-group-item">GitHub: ${employeeArray[i].github}</li>
+                    <li class="list-group-item"><a href="https://github.com/${employeeArray[i].github}" target= "_blank">GitHub Profile</a></li>
                     </ul>
             </div>`
 
@@ -256,8 +256,8 @@ createdHTML.push(headerHTML);
             cardsArray.innerHTML += `
         
             <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${employeeArray[i].name}</h5>
+                <div class="card-body bg-secondary text-white">
+                    <h2 class="card-title">${employeeArray[i].name}</h2>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
                 </div>
                     <ul class="list-group list-group-flush">

@@ -193,7 +193,7 @@ let headerHTML = `
 </head>
 <body>
 
-    <div class="jumbotron text-center">
+    <div class="jumbotron text-center bg-info text-white">
         <h1 class="display-4">Meet Our Team!</h1>
         <p class="lead">Our team members are full of enthusiasm and are ready to assist your business in projects related to digital marketing, software development, and quality assurance. </p>
         <hr class="my-4">
@@ -224,7 +224,7 @@ createdHTML.push(headerHTML);
                 </div>
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">ID: ${employeeArray[i].id}</li>
-                    <li class="list-group-item">Email: ${employeeArray[i].email}</li>
+                    <li class="list-group-item">Email: <a href="mailto:${employeeArray[i].email}">${employeeArray[i].email}</a></li>
                     <li class="list-group-item">Office Number: ${employeeArray[i].officeNumber}</li>
                     </ul>
             </div>`
@@ -243,8 +243,8 @@ createdHTML.push(headerHTML);
                 </div>
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">ID: ${employeeArray[i].id}</li>
-                    <li class="list-group-item">Email: ${employeeArray[i].email}</li>
-                    <li class="list-group-item"><a href="https://github.com/${employeeArray[i].github}" target= "_blank">GitHub Profile</a></li>
+                    <li class="list-group-item">Email: <a href="mailto:${employeeArray[i].email}">${employeeArray[i].email}</a></li>
+                    <li class="list-group-item"><a href="${employeeArray[i].getGithub()}" target= "_blank">GitHub Profile</a></li>
                     </ul>
             </div>`
 
@@ -262,7 +262,7 @@ createdHTML.push(headerHTML);
                 </div>
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item">ID: ${employeeArray[i].id}</li>
-                    <li class="list-group-item">Email: ${employeeArray[i].email}</li>
+                    <li class="list-group-item">Email: <a href="mailto:${employeeArray[i].email}">${employeeArray[i].email}</a></li>
                     <li class="list-group-item">School: ${employeeArray[i].school}</li>
                     </ul>
             </div>`

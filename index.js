@@ -1,3 +1,5 @@
+// To run the application, fs and inquirer are needed as well as the created classes
+// The employee array and createdHTML array are accessible to all functions
 const fs = require('fs');
 const inquirer = require('inquirer');
 const Employee = require('./lib/Employee');
@@ -8,6 +10,9 @@ const employeeArray = [];
 const createdHTML = [];
 
 let employeeOptions = ["Engineer", "Intern", "Finished building my team!"];
+
+
+// The manager questions are asked when the application first begins
 
 function askManagerQuestions () {
     inquirer
@@ -37,19 +42,24 @@ function askManagerQuestions () {
         },
     ])
 
+    // The employee array is updated with user inputs to the manager questions
     .then (function(response) {
 
         const manager = new Manager (response.manager, response.managerID, response.manageremail, response.manageroffice);
         employeeArray.push(manager);
 
+        // The next function will not run until the last manager question has been answered
+
         if (response.manageroffice !== "") {
             runAddEmployee();
         }
     })
-
 }
 
 askManagerQuestions();
+
+// Based on the user's response, the user will then be asked the engineer or intern questions
+// This question is in a separate function so that the application can return to it easily if the user wants to add more than one employee
 
 function runAddEmployee () {
     inquirer.prompt([
@@ -73,6 +83,8 @@ function runAddEmployee () {
         }
     })
 }
+
+// This function contains the questions unique to engineer employees
 
 function askEngineerQuestions() {
     inquirer.prompt([
@@ -104,14 +116,20 @@ function askEngineerQuestions() {
 
     .then (function(response) {
 
+        // The employee array is updated with all engineer user inputs
+
         const engineer = new Engineer (response.engineername, response.engineerID, response.engineeremail, response.engineergithub);
         employeeArray.push(engineer);
+
+        // If the last engineer question is not blank (i.e. the user has answered the last question), then they will be prompted again to add another employee
 
         if (response.engineergithub !== "") {
             runAddEmployee();
         }
     })
 }
+
+// Function that contains questions unique to intern employees
 
 function askInternQuestions() {
     inquirer.prompt([
@@ -142,8 +160,12 @@ function askInternQuestions() {
 
     .then (function(response) {
 
+        // User inputs are added to the employee array
+
         const intern = new Intern (response.internname, response.internID, response.internemail, response.internschool);
         employeeArray.push(intern);
+
+        // Ensures that the user has answered the last intern question before returning to the submenu
 
         if (response.internschool !== "") {
             runAddEmployee();
@@ -151,11 +173,12 @@ function askInternQuestions() {
     })
 }
 
-
+// Function that runs when the user responds that they have finished building their team
 
 function createPage() {
-    console.log(employeeArray);
     let cardsArray = [];
+
+// The beginning HTML in the page is consistent no matter what the user responds
 
 let headerHTML = `
 <!DOCTYPE html>
@@ -179,17 +202,22 @@ let headerHTML = `
 
     <div class = "container d-flex flex-wrap justify-content-center">
 
-        <div class = "row"> `
+        <div class = "row d-flex flex-wrap justify-content-center"> `
 
 createdHTML.push(headerHTML);
 
+// This is the part of the HTML that will change depending on user inputs
+
     for (let i = 0; i < employeeArray.length; i++) {
+
+        // Because no other employees have the property officeNumber, this can be used to identify the manager
+        // Using a template literal, the cards array innerHTML is updated to reflect HTML unique to the manager
 
         if(employeeArray[i].officeNumber) {
 
             cardsArray.innerHTML = `
         
-            <div class="card text-center ml-4 mr-4 border-info" style="width: 18rem;">
+            <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">${employeeArray[i].name}</h5>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
@@ -201,11 +229,14 @@ createdHTML.push(headerHTML);
                     </ul>
             </div>`
 
+        // This conditional statement is unique to engineer employees
+        // The cardsArray innerHTML is updated for each of the engineer inputs
+
         } else if (employeeArray[i].github) {
 
             cardsArray.innerHTML += `
         
-            <div class="card text-center ml-4 mr-4 border-info" style="width: 18rem;">
+            <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">${employeeArray[i].name}</h5>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
@@ -216,11 +247,15 @@ createdHTML.push(headerHTML);
                     <li class="list-group-item">GitHub: ${employeeArray[i].github}</li>
                     </ul>
             </div>`
+
+        // This conditional statement is unique to interns
+        // The cardsArray innerHTML is updated for each of the intern inputs   
+
         } else if (employeeArray[i].school) {
 
             cardsArray.innerHTML += `
         
-            <div class="card text-center ml-4 mr-4 border-info" style="width: 18rem;">
+            <div class="card text-center ml-4 mr-4 mb-5 border-info" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">${employeeArray[i].name}</h5>
                     <h5 class="card-title">${employeeArray[i].getRole()}</h5>
@@ -237,6 +272,8 @@ createdHTML.push(headerHTML);
 
 createdHTML.push(cardsArray.innerHTML);
 
+// The closing HTML is consistent no matter how the user responds
+
 let closingHTML = `
 </div>
 
@@ -247,11 +284,14 @@ let closingHTML = `
 </body>
 </html>`
 
+//The createdHTML array now contains three things that have been pushed to it: the beginning HTML, the cardsArray, and the closing HTML
+
 createdHTML.push(closingHTML);
 
-console.log(cardsArray);
+// The file is written in the correct directory (dist), and the createdHTML array is joined together
+// Feedback is logged in the console to determine if the page has been successfully created.
 
-    fs.writeFile("./dist/test7.html", createdHTML.join(""), function (err) {
-        err ? console.error(err) : console.log('Your page has been created!')
+    fs.writeFile("./dist/team.html", createdHTML.join(""), function (err) {
+        err ? console.error(err) : console.log('Thanks for your responses! Your page has been created!')
     })
 }
